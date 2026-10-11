@@ -11,7 +11,7 @@ Reviewed the actual development storefront before and after at 390, 768, 1024 an
 - Locally bundled Cormorant Garamond and Noto Sans Bengali with their OFL licenses. Bangla headings use a separate scale and sufficient line height. Checkout product names now use the selected locale.
 - Filament navigation groups and product/variant form sections; explicit English/Bangla, pricing-unit, stock-adjustment and image-upload guidance; clearer dashboard links and admin favicon.
 
-No commerce services, pricing, inventory, payment, coupon or order rules were changed. Online payment integrations remain disabled. No migrations, database resets or record deletion were performed against the existing development database. Browser runs used a separate SQLite backup and ordinary customer registration/authentication.
+No commerce services, pricing, inventory, payment, coupon or order rules were changed. Online payment integrations remain disabled. No migrations, database resets or record deletion were performed against the existing development database. Browser runs used ordinary customer registration/authentication. An initial isolation mistake occurred: Laravel serve discarded the database environment override, so six test customers, their bags/queued verification jobs and three cancelled test orders were added to the original development database. No existing records were deleted or reset. The server command now uses --no-reload to preserve its database override, and automatic existing-server reuse is disabled. A fresh-port run was verified to write only to the SQLite backup. Existing stock/reservation values still match the pre-review backup.
 
 ## Verification
 
@@ -43,9 +43,13 @@ npm.cmd run build
 
 Open http://127.0.0.1:8000; sign in to http://127.0.0.1:8000/admin using an existing authorized administrator. The global PHP 8.2 runtime cannot run the locked stack. Use a separate terminal for a queue worker when reviewing queued email with configured SMTP.
 
-To repeat browser checks safely, create a fresh SQLite backup at a different review path, then run the server with `DB_CONNECTION=sqlite` and `DB_DATABASE` pointing to that copy. Run in another terminal:
+To repeat browser checks safely, create a SQLite backup at the review path shown below (or substitute another disposable development database). The test runner starts Laravel with --no-reload, preserving database overrides. Use a free port; an occupied port fails instead of silently reusing an unrelated server. Then run: Run in another terminal:
 
 ~~~powershell
+$env:DB_CONNECTION = 'sqlite'
+$env:DB_DATABASE = 'D:\Projects\Fashion Ecommerce\.tools\ui-review.sqlite'
+$env:PLAYWRIGHT_BASE_URL = 'http://127.0.0.1:8015'
+$env:APP_URL = 'http://127.0.0.1:8015'
 $env:PLAYWRIGHT_CHROME_PATH = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 $env:UI_REVIEW_PHASE = 'after'
 npm.cmd run test:browser

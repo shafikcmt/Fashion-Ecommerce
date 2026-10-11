@@ -1,11 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:8000';
+const port = new URL(baseURL).port || '8000';
 export default defineConfig({
   testDir: './tests/Browser',
   fullyParallel: false,
   workers: 1,
   retries: 0,
   use: {
-    baseURL: 'http://127.0.0.1:8000',
+    baseURL,
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
     launchOptions: process.env.PLAYWRIGHT_CHROME_PATH ? { executablePath: process.env.PLAYWRIGHT_CHROME_PATH } : {},
@@ -15,9 +17,9 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' } },
   ],
   webServer: {
-    command: process.platform === 'win32' ? '.tools\\php\\php.exe artisan serve --host=127.0.0.1 --port=8000' : 'php artisan serve --host=127.0.0.1 --port=8000',
-    url: 'http://127.0.0.1:8000',
-    reuseExistingServer: !process.env.CI,
+    command: `${process.platform === 'win32' ? '.tools\\php\\php.exe' : 'php'} artisan serve --no-reload --host=127.0.0.1 --port=${port}`,
+    url: baseURL,
+    reuseExistingServer: process.env.PLAYWRIGHT_REUSE_SERVER === '1',
     timeout: 30000,
   },
 });

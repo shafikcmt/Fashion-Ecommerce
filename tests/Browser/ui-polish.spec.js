@@ -80,5 +80,5 @@ test('storefront review across English, Bangla and four widths', async ({ page }
   await testInfo.attach('browser-diagnostics', { body: JSON.stringify({ errors, failed, responses }, null, 2), contentType: 'application/json' });
   expect(errors).toEqual([]);
   expect(responses).toEqual([]);
-  expect(failed.filter(request => request.url.startsWith('http://127.0.0.1:8000'))).toEqual([]);
+  expect(failed.filter(request => request.url.startsWith(new URL(page.url()).origin))).toEqual([]);
 });
