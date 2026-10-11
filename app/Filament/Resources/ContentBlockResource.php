@@ -17,12 +17,12 @@ class ContentBlockResource extends CommerceResource
     public static function fields(): array
     {
         return [Select::make('type')->options(['hero' => 'Hero slide', 'promotion' => 'Homepage promotion', 'navigation' => 'Navigation link', 'footer' => 'Footer link'])->required(),
-            TextInput::make('title')->required()->maxLength(255), TextInput::make('title_bn')->maxLength(255),
-            Textarea::make('body')->maxLength(5000), Textarea::make('body_bn')->maxLength(5000),
+            TextInput::make('title')->label('Title (English)')->required()->maxLength(255), TextInput::make('title_bn')->label('Title (Bangla)')->maxLength(255),
+            Textarea::make('body')->label('Body (English)')->maxLength(5000), Textarea::make('body_bn')->label('Body (Bangla)')->maxLength(5000),
             TextInput::make('url')->maxLength(255)->helperText('A local path beginning with / or an HTTPS URL'),
-            TextInput::make('link_label')->maxLength(255),
-            TextInput::make('link_label_bn')->maxLength(255), Select::make('media_id')->relationship('media', 'alt')->searchable()->preload(),
-            TextInput::make('position')->integer()->minValue(0)->default(0)->required(), Toggle::make('active')->default(true)];
+            TextInput::make('link_label')->label('Button label (English)')->maxLength(255),
+            TextInput::make('link_label_bn')->label('Button label (Bangla)')->maxLength(255), Select::make('media_id')->label('Image')->relationship('media', 'alt')->searchable()->preload(),
+            TextInput::make('position')->label('Display order')->integer()->minValue(0)->default(0)->required(), Toggle::make('active')->label('Visible on storefront')->default(true)];
     }
 
     public static function columns(): array

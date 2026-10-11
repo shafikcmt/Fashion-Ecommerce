@@ -13,3 +13,26 @@ document.querySelectorAll('[data-hero-slider]').forEach(slider=>{
  slider.querySelector('[data-slide-next]')?.addEventListener('click',()=>show(active+1));
  if(slides.length)show(0);
 });
+
+
+document.querySelectorAll('[data-responsive-filters]').forEach(panel => {
+ const desktop = window.matchMedia('(min-width: 961px)');
+ const update = () => { panel.open = desktop.matches; };
+ desktop.addEventListener('change', update);
+ update();
+});
+
+document.querySelectorAll('.mobile-nav').forEach(menu => {
+ menu.addEventListener('keydown', event => {
+  if (event.key === 'Escape') { menu.open = false; menu.querySelector('summary').focus(); }
+ });
+ document.addEventListener('click', event => { if (!menu.contains(event.target)) menu.open = false; });
+});
+
+document.querySelectorAll('.gallery').forEach(gallery => {
+ gallery.addEventListener('keydown', event => {
+  if (!['ArrowLeft', 'ArrowRight'].includes(event.key) || gallery.scrollWidth <= gallery.clientWidth) return;
+  event.preventDefault();
+  gallery.scrollBy({ left: (event.key === 'ArrowRight' ? 1 : -1) * (gallery.clientWidth + 20), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+ });
+});

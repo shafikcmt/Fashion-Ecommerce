@@ -25,6 +25,16 @@ abstract class CommerceResource extends Resource
 {
     protected static bool $isDiscovered = false;
 
+    public static function getNavigationGroup(): string|\UnitEnum|null
+    {
+        return match (static::getModel()) {
+            Models\Product::class, Models\Variant::class, Models\Category::class, Models\Collection::class, Models\Brand::class, Models\Tag::class, Models\StockMovement::class => 'Catalog & inventory',
+            Models\Order::class, Models\ReturnRequest::class, Models\ShippingZone::class, Models\Coupon::class => 'Orders & delivery',
+            Models\Page::class, Models\ContentBlock::class, Models\Setting::class, Models\Media::class => 'Storefront content',
+            default => 'Administration',
+        };
+    }
+
     public static function fields(): array
     {
         return [];
@@ -66,8 +76,8 @@ abstract class CommerceResource extends Resource
         }
         if ($model === Models\Variant::class) {
             $actions[] = Action::make('adjustStock')->label('Adjust stock')->schema([
-                TextInput::make('quantity')->label('Change (+ received / − removed)')->integer()->required()->minValue(-1000000)->maxValue(1000000),
-                Textarea::make('reason')->required()->maxLength(255),
+                TextInput::make('quantity')->label('Stock change')->helperText('Positive to receive units; negative to remove units. Reserved units cannot be removed.')->integer()->required()->minValue(-1000000)->maxValue(1000000),
+                Textarea::make('reason')->label('Reason for adjustment')->required()->maxLength(255),
             ])->authorize('update')->action(function (Models\Variant $record, array $data) {
                 Gate::authorize('update', $record);
                 app(InventoryService::class)->adjust($record->id, (int) $data['quantity'], $data['reason'], auth()->id());
@@ -134,7 +144,7 @@ abstract class CommerceResource extends Resource
         if ($model === Models\Media::class) {
             return [
                 Action::make('upload')->label('Upload image')->authorize(fn () => Gate::allows('create', Models\Media::class))
-                    ->schema([FileUpload::make('image')->image()->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])->maxSize(5120)->storeFiles(false)->required(), TextInput::make('alt')->required()->maxLength(255)])
+                    ->schema([FileUpload::make('image')->image()->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])->maxSize(5120)->helperText('JPEG, PNG or WebP. Up to 5 MB and 6000 × 6000 pixels.')->storeFiles(false)->required(), TextInput::make('alt')->label('Image description (alt text)')->helperText('Describe the image for customers using a screen reader.')->required()->maxLength(255)])
                     ->action(function (array $data) {
                         Gate::authorize('create', Models\Media::class);
                         app(MediaService::class)->upload($data['image'], $data['alt']);

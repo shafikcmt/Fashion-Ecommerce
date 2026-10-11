@@ -23,7 +23,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel->default()->id('admin')->path('admin')->login()->brandName('Fashion CMS')
+        return $panel->default()->id('admin')->path('admin')->login()->brandName('Fashion CMS')->favicon(asset('images/brand-mark.svg'))
             ->colors(['primary' => Color::Indigo])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->pages([Dashboard::class, Reports::class])

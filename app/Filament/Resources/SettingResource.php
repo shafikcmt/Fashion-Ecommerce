@@ -14,8 +14,8 @@ class SettingResource extends CommerceResource
 
     public static function fields(): array
     {
-        return [Select::make('key')->options(array_combine(['brand_name', 'brand_color', 'brand_story', 'logo_media_id', 'social_media_id', 'contact_email', 'contact_phone', 'contact_address', 'announcement', 'announcement_bn', 'seo_description'], ['Brand name', 'Brand color (#RRGGBB)', 'Brand story', 'Logo media ID', 'Social image media ID', 'Contact email', 'Contact phone', 'Contact address', 'Announcement (English)', 'Announcement (Bangla)', 'SEO description']))->required()->unique(ignoreRecord: true),
-            Textarea::make('value')->maxLength(5000)->required()];
+        return [Select::make('key')->label('Storefront setting')->searchable()->options(array_combine(['brand_name', 'brand_color', 'brand_story', 'logo_media_id', 'social_media_id', 'contact_email', 'contact_phone', 'contact_address', 'announcement', 'announcement_bn', 'seo_description'], ['Brand name', 'Brand color (#RRGGBB)', 'Brand story', 'Logo media ID', 'Social image media ID', 'Contact email', 'Contact phone', 'Contact address', 'Announcement (English)', 'Announcement (Bangla)', 'SEO description']))->required()->unique(ignoreRecord: true),
+            Textarea::make('value')->label('Setting value')->helperText('For logo and social images, use the ID from Media. Brand color uses #RRGGBB.')->rows(4)->columnSpanFull()->maxLength(5000)->required()];
     }
 
     public static function columns(): array
