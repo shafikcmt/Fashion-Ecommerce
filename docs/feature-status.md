@@ -21,12 +21,16 @@ The application implements the five core milestones locally. Online payments are
 
 These counts are recorded from actual local runs. The upload test uses a unique fake disk to avoid repeated-directory reuse failures on Windows.
 
-## Configured but not verified here
+## CI verification
+
+GitHub Actions run [38119265972](https://github.com/shafikcmt/Fashion-Ecommerce/actions/runs/38119265972) passed on commit `ab855fe`. Its PostgreSQL 17 migrations and full PHP suite, Redis connection check, lint, production build, compiled views/routes, and Chromium browser scenarios all passed. The three PostgreSQL race tests are included in that CI suite.
+
+## Configured but not verified locally
 
 - PostgreSQL runtime checks and three separate-process race tests. This host has no PostgreSQL server or Docker. CI is configured to run them against PostgreSQL 17; local SQLite tests do not prove PostgreSQL concurrency behavior.
 - Redis queues/cache/rate-limiter backend. Redis health check correctly reports unavailable here; CI contains a connectivity check. Local fallback used database sessions/cache/queues.
 - Docker Compose startup, S3 bucket access, real SMTP delivery, backup recovery and a production deployment. Instructions are provided, not a completed deployment claim.
-- Remote GitHub Actions status depends on repository push/access.
+- GitHub Actions passed remotely; local Docker Compose startup remains unverified.
 
 ## Pending credentials
 
