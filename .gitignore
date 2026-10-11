@@ -24,3 +24,9 @@
 
 /public/hot
 /coverage
+
+/.env.*
+!/.env.example
+/*.dump
+/*.sql
+/backups

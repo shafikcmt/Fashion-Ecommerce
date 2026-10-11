@@ -243,7 +243,9 @@ class CommerceTest extends TestCase
 
     public function test_upload_validation_and_referenced_media_cannot_be_deleted(): void
     {
-        Storage::fake('public');
+        $disk = 'media-test-'.Str::uuid();
+        Storage::fake($disk);
+        config(['commerce.media_disk' => $disk]);
         $media = app(MediaService::class)->upload(UploadedFile::fake()->image('dress.jpg'), 'Blue dress');
         $p = Product::factory()->create();
         $p->media()->attach($media->id);
