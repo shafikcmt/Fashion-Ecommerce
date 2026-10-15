@@ -1,0 +1,8 @@
+<x-filament-panels::page>
+<form wire:submit="apply" class="flex flex-wrap items-end gap-4"><label>From<input class="rounded border p-2 block" type="date" wire:model="from" required></label><label>To<input class="rounded border p-2 block" type="date" wire:model="to" required></label><x-filament::button type="submit">Apply dates</x-filament::button></form>
+@foreach($errors->all() as $error)<p role="alert">{{ $error }}</p>@endforeach
+<x-filament::section heading="Collected revenue"><p class="text-3xl font-semibold">{{ \App\Support\Money::format((int)$revenue) }}</p><p>Sum of order totals currently marked paid, for orders created in this date range (Asia/Dhaka). Unpaid COD and refunded orders are excluded. This includes shipping.</p><a href="{{ \App\Filament\Resources\OrderResource::getUrl() }}">View underlying orders</a></x-filament::section>
+<x-filament::section heading="Orders by status">@forelse($counts as $row)<p>{{ ucfirst($row->status) }}: {{ $row->count }}</p>@empty<p>No orders in this date range.</p>@endforelse</x-filament::section>
+<x-filament::section heading="Best-selling variants (paid orders)">@forelse($best as $row)<p>{{ $row->product_name }} / {{ $row->sku }}: {{ $row->quantity }} units</p>@empty<p>No paid sales in this date range.</p>@endforelse</x-filament::section>
+<x-filament::section heading="Low available stock (current)">@forelse($low as $v)<p>{{ $v->product->name }} / {{ $v->sku }}: {{ $v->available() }} available ({{ $v->reserved }} reserved)</p>@empty<p>No low-stock variants.</p>@endforelse@can("viewAny",\App\Models\Variant::class)<a href="{{ \App\Filament\Resources\VariantResource::getUrl() }}">Manage variants</a>@endcan</x-filament::section>
+</x-filament-panels::page>

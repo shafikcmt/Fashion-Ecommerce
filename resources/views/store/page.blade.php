@@ -1,0 +1,1 @@
+<x-layouts.app :title="$page->localized('title')" :description="$page->seo_description"><article class="wrap content-page"><h1>{{ $page->localized('title') }}</h1><div class="preserve">{{ $page->localized('body') }}</div></article></x-layouts.app>
