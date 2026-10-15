@@ -42,7 +42,7 @@ class CmsActionsTest extends TestCase
     public function test_stock_adjustment_admin_action_records_history_and_preserves_reservations(): void
     {
         $v = Variant::factory()->create(['stock' => 5, 'reserved' => 2]);
-        Livewire::test(ManageVariantRecords::class)->callTableAction('adjustStock', $v, data: ['quantity' => 3, 'reason' => 'Received shipment'])->assertHasNoTableActionErrors();
+        Livewire::test(ManageVariantRecords::class)->callTableAction('adjustStock', $v, data: ['quantity' => 3, 'reason' => 'Received shipment'])->assertHasNoTableActionErrors()->assertNotified('Stock adjusted');
         $this->assertSame(8, $v->fresh()->stock);
         $this->assertSame(2, $v->fresh()->reserved);
         $this->assertDatabaseHas('stock_movements', ['variant_id' => $v->id, 'quantity' => 3, 'reason' => 'Received shipment']);
@@ -62,7 +62,7 @@ class CmsActionsTest extends TestCase
         $zone = ShippingZone::create(['name' => 'Dhaka', 'districts' => ['Dhaka'], 'charge' => 0]);
         $order = app(CheckoutService::class)->place($cart, ['name' => 'Buyer', 'email' => 'buyer@example.test', 'phone' => '01712345678', 'address' => 'Road', 'district' => 'Dhaka', 'shipping_zone_id' => $zone->id], (string) Str::uuid());
         foreach (['confirmed', 'shipped', 'delivered', 'collectCod'] as $action) {
-            Livewire::test(ManageOrderRecords::class)->callTableAction($action, $order->fresh())->assertHasNoTableActionErrors();
+            Livewire::test(ManageOrderRecords::class)->callTableAction($action, $order->fresh())->assertHasNoTableActionErrors()->assertNotified($action === 'collectCod' ? 'COD collection recorded' : 'Order '.$action);
         }
         $this->assertSame('delivered', $order->fresh()->status);
         $this->assertSame('paid', $order->fresh()->payment_status);

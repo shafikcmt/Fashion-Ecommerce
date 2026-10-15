@@ -55,26 +55,12 @@ jobs:
       - run: php artisan route:cache
       - name: Verify Redis connection
         run: php artisan commerce:check-redis
-      - name: Configure isolated browser database
-        run: |
-          touch database/browser.sqlite
-          echo "DB_CONNECTION=sqlite" >> .env
-          echo "DB_DATABASE=${GITHUB_WORKSPACE}/database/browser.sqlite" >> .env
-          echo "SESSION_DRIVER=database" >> .env
-          echo "APP_URL=http://127.0.0.1:8000" >> .env
-      - name: Migrate browser database and seed
-        run: php artisan migrate --force && php artisan commerce:seed-demo && php artisan storage:link
-        env:
-          APP_ENV: local
-          DB_CONNECTION: sqlite
-          DB_DATABASE: ${{ github.workspace }}/database/browser.sqlite
+      - name: Prepare public media storage for browser checks
+        run: php artisan storage:link
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
         env:
           APP_ENV: local
-          DB_CONNECTION: sqlite
-          DB_DATABASE: ${{ github.workspace }}/database/browser.sqlite
-          SESSION_DRIVER: database
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
