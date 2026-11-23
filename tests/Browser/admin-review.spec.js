@@ -178,9 +178,9 @@ test('admin saves, uploads, stock, courier and return workflows', async ({ page,
   await expect(page.locator('.fi-ta-row').filter({ hasText: 'Disposable review receipt' })).toBeVisible();
 
   await page.goto('/admin/content-blocks');
-  await page.getByRole('searchbox').fill('Everyday, beautifully dressed.');
+  await page.getByRole('searchbox').fill('Eid is coming. Dress your family.');
   await expect(page.locator('.fi-ta-row')).toHaveCount(1);
-  await openRowAction(page, 'Everyday, beautifully dressed.', 'Edit');
+  await openRowAction(page, 'Eid is coming. Dress your family.', 'Edit');
   await modal(page).getByLabel(/Title \(English\)/).fill('A wardrobe reviewed with care.');
   await submitAction(page, 'Saved');
   await page.goto('/');
@@ -189,11 +189,11 @@ test('admin saves, uploads, stock, courier and return workflows', async ({ page,
   await page.goto('/admin/content-blocks');
   await page.getByRole('searchbox').fill('A wardrobe reviewed with care.');
   await openRowAction(page, 'A wardrobe reviewed with care.', 'Edit');
-  await modal(page).getByLabel(/Title \(English\)/).fill('Everyday, beautifully dressed.');
+  await modal(page).getByLabel(/Title \(English\)/).fill('Eid is coming. Dress your family.');
   await submitAction(page, 'Saved');
-  await page.getByRole('searchbox').fill('The everyday edit');
+  await page.getByRole('searchbox').fill('Eid Collection');
   await expect(page.locator('.fi-ta-row')).toHaveCount(1);
-  await openRowAction(page, 'The everyday edit', 'Edit');
+  await openRowAction(page, 'Eid Collection', 'Edit');
   await modal(page).getByLabel(/Title \(English\)/).fill('Reviewed edit');
   await submitAction(page, 'Saved');
   await page.goto('/');
@@ -202,19 +202,19 @@ test('admin saves, uploads, stock, courier and return workflows', async ({ page,
   await page.goto('/admin/content-blocks');
   await page.getByRole('searchbox').fill('Reviewed edit');
   await openRowAction(page, 'Reviewed edit', 'Edit');
-  await modal(page).getByLabel(/Title \(English\)/).fill('The everyday edit');
+  await modal(page).getByLabel(/Title \(English\)/).fill('Eid Collection');
   await submitAction(page, 'Saved');
   await page.goto('/admin/settings');
   await page.getByRole('searchbox').fill('brand_name');
-  await expect(page.locator('.fi-ta-row')).toHaveCount(1);
-  await openRowAction(page, 'brand_name', 'Edit');
+  await expect(page.locator('.fi-ta-row')).toHaveCount(2);
+  await openRowAction(page, /brand_name(?!_)/, 'Edit');
   await modal(page).getByLabel(/Setting value/).fill('Reviewed Mamoni');
   await submitAction(page, 'Saved');
   await page.goto('/');
   await expect(page.locator('header .wordmark')).toContainText('Reviewed Mamoni');
   await page.goto('/admin/settings');
   await page.getByRole('searchbox').fill('brand_name');
-  await openRowAction(page, 'brand_name', 'Edit');
+  await openRowAction(page, /brand_name(?!_)/, 'Edit');
   await modal(page).getByLabel(/Setting value/).fill('Mamoni Bosraloy');
   await submitAction(page, 'Saved');
 

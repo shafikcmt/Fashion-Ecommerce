@@ -8,6 +8,7 @@ use App\Http\Controllers\SeoController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TrackOrderController;
 use App\Livewire\ShoppingBag;
+use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,12 @@ Route::post('/products/{slug}/reviews', [StoreController::class, 'review'])->mid
 Route::get('/track-order', [TrackOrderController::class, 'form'])->name('track');
 Route::post('/track-order', [TrackOrderController::class, 'lookup'])->middleware('throttle:track')->name('track.lookup');
 Route::get('/pages/{slug}', [StoreController::class, 'page'])->name('page');
+Route::post('/admin-locale', function (Request $r) {
+    abort_unless($r->user()?->canAccessPanel(Filament::getPanel('admin')), 403);
+    session($r->validate(['admin_locale' => 'required|in:en,bn']));
+
+    return back();
+})->middleware('auth')->name('admin.locale');
 Route::post('/locale', function (Request $r) {
     $data = $r->validate(['locale' => 'required|in:en,bn']);
     session($data);

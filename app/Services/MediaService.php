@@ -20,9 +20,14 @@ final class MediaService
         $disk = config('commerce.media_disk', 'public');
         $path = $file->store('media', $disk);
         try {
-            return Media::create(['disk' => $disk, 'path' => $path, 'alt' => $alt, 'mime' => $file->getMimeType(), 'bytes' => $file->getSize()]);
+            $variants = app(ImageVariants::class)->generate($disk, $path);
+
+            return Media::create(['disk' => $disk, 'path' => $path, 'alt' => $alt, 'mime' => $file->getMimeType(), 'bytes' => $file->getSize(), 'variants' => $variants]);
         } catch (\Throwable $e) {
             Storage::disk($disk)->delete($path);
+            foreach ($variants['files'] ?? [] as $variantPath) {
+                Storage::disk($disk)->delete($variantPath);
+            }
             throw $e;
         }
     }
@@ -35,7 +40,7 @@ final class MediaService
                 throw ValidationException::withMessages(['media' => 'Remove all references before deleting this image.']);
             }
             $m->delete();
-            DB::afterCommit(fn () => Storage::disk($m->disk)->delete($m->path));
+            DB::afterCommit(fn () => Storage::disk($m->disk)->delete([$m->path, ...array_values($m->variants['files'] ?? [])]));
         });
     }
 }

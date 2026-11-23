@@ -70,6 +70,11 @@ class Product extends CommerceModel
         return app()->getLocale() === 'bn' ? ($this->{$field.'_bn'} ?: $this->{$field}) : $this->{$field};
     }
 
+    public function imageSrcset(): ?string
+    {
+        return $this->media->first()?->srcset();
+    }
+
     public function image(): string
     {
         return $this->media->first()?->url() ?? asset('images/placeholder.svg');

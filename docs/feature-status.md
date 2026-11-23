@@ -59,7 +59,7 @@ S3 storage is configured through Laravel/Flysystem. Supply endpoint, bucket, reg
 - Reviews: customers (guests or signed in) submit a 1–5 star review; it stays hidden until a catalog manager approves it under Catalog & inventory → Product reviews. Only approved reviews are shown, averaged on cards and the product page and emitted as `aggregateRating` JSON-LD. A signed-in customer has one review per product (edits return it to pending) and gets a "verified purchase" badge when a delivered order contains the product. A honeypot field and a per-minute limit reduce spam.
 - Order tracking: `/track-order` takes the order number and checkout phone and opens the order page through a one-hour signed link; wrong number or phone gives the same generic error.
 - Delivery of static assets: nginx serves `/build` with a one-year immutable cache, demo/images for seven days, and gzip.
-- Not done: automatic WebP/responsive image generation, a CDN, Bangla admin labels and a Bangla-aware full-text index.
+- Not done: a CDN and a Bangla-aware full-text index.
 
 ## Phase 5 additions (not yet run locally: PHP 8.4 was unavailable in the authoring environment)
 
@@ -69,3 +69,10 @@ S3 storage is configured through Laravel/Flysystem. Supply endpoint, bucket, reg
 ## Still pending credentials
 
 bKash/Nagad/SSLCommerz provider APIs, courier APIs (Pathao, Steadfast, RedX) and SMS order notifications need merchant/sandbox access and current documentation from the provider; none is implemented. Courier name and tracking number are still entered by hand.
+
+## Phase 6 completion (not yet run locally: PHP 8.4 was unavailable in the authoring environment)
+
+- **Image optimization.** New JPEG/PNG/WebP uploads get 480 px and 960 px WebP copies (GD, quality 82; only sizes smaller than the original). They are listed in `media.variants` and used as `srcset`/`sizes` on product cards, the product gallery and the hero. Originals are untouched, deleting an image deletes its variants, and images uploaded earlier or seeded SVGs simply use their original. Re-upload older photos to get variants. GD needs WebP support (`gd_info()['WebP Support']`).
+- **Admin language.** The admin panel is English by default and independent of the storefront language (Livewire calls are matched by their `/admin` referer). The dashboard has an English/বাংলা switch (`POST /admin-locale`, admin roles only). The dashboard, its navigation groups and Filament's own interface are translated; resource form and column labels (for example "Name (English)") remain English.
+- **Dashboard.** Seven-day table of orders and paid revenue in Asia/Dhaka, bKash/Nagad orders waiting for verification, reviews waiting for approval, and the lowest-stock variants.
+- Browser tests were updated for the Eid hero title, the "Eid Collection" navigation link and the two brand-name settings rows.
