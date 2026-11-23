@@ -43,7 +43,7 @@ S3 storage is configured through Laravel/Flysystem. Supply endpoint, bucket, reg
 ## Intentional boundaries / remaining limitations
 
 - Returns cover an entire order, with manual approval, receipt and refund recording; partial-item returns and automated refunds are planned.
-- Shipping uses exact district names and flat zone charges. Address normalization, cash collection reconciliation, tax accounting and carrier APIs are planned.
+- Checkout uses a 64-district dropdown (Bangla names in Bangla mode), an optional upazila/thana/area, phone-first contact (email optional; phone-derived placeholder identity, no confirmation email) and three delivery zones (Inside Dhaka ৳70, rest of Dhaka division ৳100, outside Dhaka ৳130), picked automatically from the district. The `free_delivery_min` setting (whole taka, demo ৳3,000) makes delivery free once the discounted subtotal reaches it. SMS confirmation, upazila-level pricing, cash collection reconciliation, tax accounting and carrier APIs are planned (SMS needs a gateway account).
 - Coupon per-customer limits use normalized email, including guest email; verified-person abuse prevention is not implemented.
 - Body content is escaped plain text. Rich HTML editing is not supported. Some admin labels and diagnostic messages remain English. Empty Bangla fields fall back to English.
 - Low-stock alerts appear in dashboard/reports; scheduled email stock alerts are planned.

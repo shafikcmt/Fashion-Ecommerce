@@ -59,7 +59,7 @@
   "Size guide": "মাপের নির্দেশিকা",
   "Contact our team for help choosing your size.": "মাপ বেছে নিতে আমাদের সহায়তা নিন।",
   "Delivery & returns": "ডেলিভারি ও রিটার্ন",
-  "Cash on delivery across Bangladesh. Shipping is calculated at checkout.": "সারা বাংলাদেশে ক্যাশ অন ডেলিভারি। চেকআউটে ডেলিভারি চার্জ যোগ হবে।",
+  "Cash on delivery across Bangladesh. Shipping is calculated at checkout.": "সারা বাংলাদেশে ক্যাশ অন ডেলিভারি। ডেলিভারি চার্জ চেকআউটে জেলা অনুযায়ী হিসাব হয়।",
   "Read our return policy": "রিটার্ন নীতিমালা পড়ুন",
   "You may also like": "আপনার পছন্দ হতে পারে",
   "Choose a color": "রং বাছাই করুন",
@@ -224,5 +224,12 @@
   "Quality fabric. Fair price. Trusted by families.": "ভালো কাপড়। ন্যায্য দাম। পরিবারের আস্থা।",
   "Fabric": "কাপড়",
   "Made in": "তৈরি হয়েছে",
-  "Ask on WhatsApp": "হোয়াটসঅ্যাপে জিজ্ঞাসা করুন"
+  "Ask on WhatsApp": "হোয়াটসঅ্যাপে জিজ্ঞাসা করুন",
+  "Choose district": "জেলা বাছাই করুন",
+  "Upazila / Thana / Area": "উপজেলা / থানা / এলাকা",
+  "optional": "ঐচ্ছিক",
+  "For order updates by email": "ইমেইলে অর্ডারের আপডেট পেতে",
+  "Mobile number": "মোবাইল নম্বর",
+  "House, road, village or area": "বাড়ি, রাস্তা, গ্রাম বা এলাকা",
+  "Free delivery on orders of": "ডেলিভারি চার্জ ফ্রি, অর্ডার হলে"
 }

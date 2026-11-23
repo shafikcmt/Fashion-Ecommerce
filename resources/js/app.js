@@ -3,7 +3,7 @@ document.querySelectorAll('[data-print]').forEach(button=>button.addEventListene
 document.querySelectorAll('[data-once-submit]').forEach(button=>button.form.addEventListener('submit',()=>{ button.disabled=true; button.textContent=document.documentElement.lang==='bn'?'অর্ডার পাঠানো হচ্ছে…':'Placing your order…'; }));
 document.querySelectorAll('[data-saved-address]').forEach(select=>select.addEventListener('change',()=>{
  const data=select.selectedOptions[0].dataset;
- for(const name of ['name','phone','address','district','postcode']) { const field=select.form.elements.namedItem(name); if(field && data[name]!==undefined) field.value=data[name]; }
+ for(const name of ['name','phone','address','district','postcode']) { const field=select.form.elements.namedItem(name); if(field && data[name]!==undefined) { field.value=data[name]; if(field.tagName==='SELECT') field.dispatchEvent(new Event('change')); } }
 }));
 
 document.querySelectorAll('[data-hero-slider]').forEach(slider=>{
@@ -35,4 +35,23 @@ document.querySelectorAll('.gallery').forEach(gallery => {
   event.preventDefault();
   gallery.scrollBy({ left: (event.key === 'ArrowRight' ? 1 : -1) * (gallery.clientWidth + 20), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
  });
+});
+
+document.querySelectorAll('[data-shipping]').forEach(select => {
+ const district = select.form.querySelector('select[data-district-select]');
+ if (!district) return;
+ const covers = (option, name) => { try { const list = JSON.parse(option.dataset.districts || '[]'); return list.includes('*') || list.includes(name); } catch { return false; } };
+ const update = () => {
+  const name = district.value;
+  const options = [...select.options].filter(option => option.value);
+  options.forEach(option => { option.disabled = !!name && !covers(option, name); });
+  const usable = options.filter(option => !option.disabled);
+  if (!usable.length) return;
+  // Prefer the most specific zone (a listed district beats "*"), then the cheapest.
+  const specific = usable.filter(option => !JSON.parse(option.dataset.districts || '[]').includes('*'));
+  const pool = specific.length ? specific : usable;
+  if (name) select.value = pool.sort((a, b) => a.dataset.charge - b.dataset.charge)[0].value;
+ };
+ district.addEventListener('change', update);
+ update();
 });

@@ -361,3 +361,5 @@ footer .footer-bottom { border-color:#ffffff22; }
 .wordmark .brand-text { display:flex; font-size:1rem; margin:0; color:inherit; }
 .wordmark .brand-text small { display:block; font-size:.62rem; line-height:1.15; margin-top:3px; color:var(--gold-deep); }
 @media(max-width:600px) { .wordmark .brand-text small { font-size:.55rem; } }
+.free-delivery { background:#fff7df; border:1px dashed var(--gold-deep); color:var(--maroon); border-radius:8px; padding:8px 12px; font-weight:600; font-size:.9rem; }
+select option:disabled { color:#aaa; }

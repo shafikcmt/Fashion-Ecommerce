@@ -13,6 +13,7 @@ use App\Models\Setting;
 use App\Models\ShippingZone;
 use App\Models\Variant;
 use App\Services\InventoryService;
+use App\Support\BdDistricts;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class DemoSeeder extends Seeder
                 'brand_story' => 'Sari, Panjabi, Three-piece and everyday wear for the whole family. Trusted quality at fair prices.',
                 'brand_story_bn' => 'শাড়ি, পাঞ্জাবি, থ্রি-পিস ও পরিবারের সবার প্রতিদিনের পোশাক। বিশ্বস্ত মান, ন্যায্য দাম।',
                 'contact_email' => 'hello@example.test', 'contact_phone' => '+880 1700 000000', 'whatsapp' => '8801700000000',
-                'contact_address' => 'Dhaka, Bangladesh',
+                'contact_address' => 'Dhaka, Bangladesh', 'free_delivery_min' => '3000',
                 'announcement' => 'Cash on delivery all over Bangladesh · 7-day easy return',
                 'announcement_bn' => 'সারা বাংলাদেশে ক্যাশ অন ডেলিভারি · ৭ দিনের মধ্যে সহজ রিটার্ন',
                 'seo_description' => 'Mamoni Bosraloy: sari, panjabi, three-piece, kurti, lungi and kids wear in Bangladesh. Prices in BDT with cash on delivery.',
@@ -157,8 +158,9 @@ class DemoSeeder extends Seeder
                 Page::firstOrCreate(['slug' => $slug], ['title' => $title, 'title_bn' => $bn, 'body' => $body, 'body_bn' => 'এটি ডেমো লেখা। প্রকাশের আগে আপনার দোকানের প্রকৃত তথ্য ও নীতিমালা যোগ করুন।', 'published' => true]);
                 ContentBlock::firstOrCreate(['type' => 'footer', 'url' => '/pages/'.$slug], ['title' => $title, 'title_bn' => $bn, 'position' => ContentBlock::where('type', 'footer')->count()]);
             }
-            ShippingZone::firstOrCreate(['name' => 'Dhaka delivery'], ['districts' => ['Dhaka'], 'charge' => 8000]);
-            ShippingZone::firstOrCreate(['name' => 'Nationwide delivery'], ['districts' => ['*'], 'charge' => 15000]);
+            ShippingZone::firstOrCreate(['name' => 'Inside Dhaka'], ['districts' => ['Dhaka'], 'charge' => 7000]);
+            ShippingZone::firstOrCreate(['name' => 'Dhaka division (outside Dhaka)'], ['districts' => BdDistricts::outsideDhakaCity(), 'charge' => 10000]);
+            ShippingZone::firstOrCreate(['name' => 'Outside Dhaka'], ['districts' => ['*'], 'charge' => 13000]);
         });
     }
 }

@@ -1,0 +1,2 @@
+@props(['name' => 'district', 'selected' => null])
+<select name="{{ $name }}" required autocomplete="address-level2" {{ $attributes }}><option value="">{{ __('Choose district') }}</option>@foreach(\App\Support\BdDistricts::DIVISIONS as $division=>$districts)<optgroup label="{{ $division }}">@foreach($districts as $english=>$bangla)<option value="{{ $english }}" @selected($selected===$english)>{{ app()->getLocale()==='bn'?$bangla:$english }}</option>@endforeach</optgroup>@endforeach</select>

@@ -228,9 +228,10 @@ test('admin saves, uploads, stock, courier and return workflows', async ({ page,
   await customer.getByRole('button', { name: 'Add to bag', exact: true }).click();
   await expect(customer.getByText('Added to your bag.', { exact: false })).toBeVisible();
   await customer.goto('/checkout');
-  for (const [label, value] of [['Full name', 'Review Buyer'], ['Email', 'review-buyer@example.test'], ['Phone', '01700000000'], ['District', 'Dhaka']]) await customer.getByLabel(label, { exact: true }).fill(value);
+  for (const [label, value] of [['Full name', 'Review Buyer'], [/^Email/, 'review-buyer@example.test'], ['Mobile number', '01700000000']]) await customer.getByLabel(label, typeof label === 'string' ? { exact: true } : undefined).fill(value);
+  await customer.getByLabel('District', { exact: true }).selectOption('Dhaka');
   await customer.getByLabel('Street address').fill('Disposable review address');
-  await customer.getByRole('combobox', { name: 'Shipping method', exact: true }).selectOption({ label: 'Dhaka delivery · ৳80 (Dhaka)' });
+  await customer.getByRole('combobox', { name: 'Shipping method', exact: true }).selectOption({ label: 'Inside Dhaka · ৳70' });
   await customer.locator('input[name=terms]').check();
   await customer.getByRole('button', { name: 'Review your order', exact: true }).click();
   await customer.getByRole('button', { name: 'Place order · Cash on delivery', exact: true }).click();

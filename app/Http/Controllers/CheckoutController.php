@@ -7,11 +7,13 @@ use App\Models\ShippingZone;
 use App\Services\CartService;
 use App\Services\CheckoutService;
 use App\Services\OrderService;
+use App\Support\BdDistricts;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class CheckoutController extends Controller
@@ -28,8 +30,8 @@ class CheckoutController extends Controller
     public function review(Request $r): View
     {
         $data = $r->validate([
-            'name' => 'required|string|max:100', 'email' => 'required|email|max:255', 'phone' => ['required', 'regex:/^(?:\+?88)?01[3-9]\d{8}$/'],
-            'address' => 'required|string|max:255', 'district' => 'required|string|max:100', 'postcode' => 'nullable|string|max:20',
+            'name' => 'required|string|max:100', 'email' => 'nullable|email|max:255', 'phone' => ['required', 'regex:/^(?:\+?88)?01[3-9]\d{8}$/'],
+            'address' => 'required|string|max:255', 'area' => 'nullable|string|max:150', 'district' => ['required', Rule::in(BdDistricts::names())], 'postcode' => 'nullable|string|max:20',
             'shipping_zone_id' => 'required|integer', 'coupon' => 'nullable|string|max:50', 'payment_method' => 'required|in:cod',
             'checkout_key' => 'required|uuid', 'terms' => 'accepted',
         ]);

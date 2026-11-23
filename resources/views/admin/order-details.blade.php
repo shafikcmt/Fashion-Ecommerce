@@ -2,8 +2,8 @@
     <x-filament::section heading="Customer & delivery">
         <dl style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1rem" data-review-private>
             <div><dt style="font-size: 0.875rem; opacity: 0.7">Customer</dt><dd style="font-weight: 500">{{ $order->customer_name }}</dd></div>
-            <div><dt style="font-size: 0.875rem; opacity: 0.7">Contact</dt><dd>{{ $order->email }}<br>{{ $order->phone }}</dd></div>
-            <div><dt style="font-size: 0.875rem; opacity: 0.7">Delivery address</dt><dd>{{ $order->address['address'] }}, {{ $order->address['district'] }}</dd></div>
+            <div><dt style="font-size: 0.875rem; opacity: 0.7">Contact</dt><dd>{{ \App\Services\CheckoutService::isPlaceholderEmail($order->email) ? '—' : $order->email }}<br>{{ $order->phone }}</dd></div>
+            <div><dt style="font-size: 0.875rem; opacity: 0.7">Delivery address</dt><dd>{{ $order->address['address'] }}{{ ! empty($order->address['area']) ? ', '.$order->address['area'] : '' }}, {{ $order->address['district'] }}</dd></div>
             <div><dt style="font-size: 0.875rem; opacity: 0.7">Shipping method</dt><dd>{{ $order->shipping_method }}</dd></div>
         </dl>
     </x-filament::section>
