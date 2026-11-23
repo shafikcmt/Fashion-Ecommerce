@@ -51,3 +51,12 @@ S3 storage is configured through Laravel/Flysystem. Supply endpoint, bucket, reg
 - Storefront filters include text, size, color, min/max price and sorting. Faceted counts and advanced full-text search are planned.
 - Demo names, photos, stock, sizes, contacts and policy pages are development samples. Replace them with actual store content before launch.
 - No external payment, deployment, email delivery or PostgreSQL/Redis production readiness has been claimed without verification.
+
+## Phase 6 additions (not yet run locally: PHP 8.4 was unavailable in the authoring environment)
+
+- Search matches English and Bangla names, fabric, descriptions and category, and expands common spelling variants (shari/sari/saree/শাড়ি, panjabi/punjabi/পাঞ্জাবি, three-piece/থ্রি-পিস, hijab, lungi and others; see `App\Support\SearchTerms`). PostgreSQL uses `ILIKE`.
+- Filters: colour and fabric dropdowns built from real data, in-stock-only, price, size and sort.
+- Reviews: customers (guests or signed in) submit a 1–5 star review; it stays hidden until a catalog manager approves it under Catalog & inventory → Product reviews. Only approved reviews are shown, averaged on cards and the product page and emitted as `aggregateRating` JSON-LD. A signed-in customer has one review per product (edits return it to pending) and gets a "verified purchase" badge when a delivered order contains the product. A honeypot field and a per-minute limit reduce spam.
+- Order tracking: `/track-order` takes the order number and checkout phone and opens the order page through a one-hour signed link; wrong number or phone gives the same generic error.
+- Delivery of static assets: nginx serves `/build` with a one-year immutable cache, demo/images for seven days, and gzip.
+- Not done: automatic WebP/responsive image generation, a CDN, Bangla admin labels and a Bangla-aware full-text index.

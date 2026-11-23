@@ -44,6 +44,22 @@ class Product extends CommerceModel
         return $this->belongsToMany(Media::class, 'media_product')->withPivot('position')->orderByPivot('position');
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    public function approvedReviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class)->where('status', 'approved');
+    }
+
+    /** Adds `approved_reviews_avg_rating` and `approved_reviews_count` to the query. */
+    public function scopeWithRating(Builder $query): Builder
+    {
+        return $query->withAvg('approvedReviews', 'rating')->withCount('approvedReviews');
+    }
+
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published')->whereHas('variants');

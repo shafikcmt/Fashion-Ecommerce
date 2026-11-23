@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         foreach ([
             Models\Product::class => 'catalog_manager', Models\Variant::class => 'catalog_manager',
-            Models\Category::class => 'catalog_manager', Models\Collection::class => 'catalog_manager', Models\Brand::class => 'catalog_manager', Models\Tag::class => 'catalog_manager',
+            Models\Category::class => 'catalog_manager', Models\Collection::class => 'catalog_manager', Models\Brand::class => 'catalog_manager', Models\Tag::class => 'catalog_manager', Models\ProductReview::class => 'catalog_manager',
             Models\Media::class => ['catalog_manager', 'content_editor'], Models\Page::class => 'content_editor', Models\ContentBlock::class => 'content_editor', Models\Setting::class => 'content_editor',
             Models\Coupon::class => 'order_manager', Models\ShippingZone::class => 'order_manager', Models\ReturnRequest::class => 'order_manager',
             Models\User::class => 'super_admin', Models\StockMovement::class => 'catalog_manager', Models\AuditLog::class => 'super_admin',
@@ -37,6 +37,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('catalog-import', fn (Models\User $u) => $u->hasVerifiedEmail() && in_array($u->role, ['super_admin', 'catalog_manager'], true));
         Gate::define('reports', fn (Models\User $u) => $u->hasVerifiedEmail() && in_array($u->role, ['super_admin', 'order_manager'], true));
         RateLimiter::for('auth', fn (Request $r) => [Limit::perMinute(5)->by(strtolower((string) $r->input('email')).'|'.$r->ip()), Limit::perMinute(20)->by($r->ip())]);
+        RateLimiter::for('review', fn (Request $r) => Limit::perMinute(5)->by($r->user()?->id ?? $r->ip()));
+        RateLimiter::for('track', fn (Request $r) => Limit::perMinute(8)->by($r->ip()));
         RateLimiter::for('checkout', fn (Request $r) => Limit::perMinute(10)->by($r->user()?->id ?? $r->ip()));
     }
 }

@@ -29,7 +29,7 @@ abstract class CommerceResource extends Resource
     public static function getNavigationGroup(): string|\UnitEnum|null
     {
         return match (static::getModel()) {
-            Models\Product::class, Models\Variant::class, Models\Category::class, Models\Collection::class, Models\Brand::class, Models\Tag::class, Models\StockMovement::class => 'Catalog & inventory',
+            Models\Product::class, Models\ProductReview::class, Models\Variant::class, Models\Category::class, Models\Collection::class, Models\Brand::class, Models\Tag::class, Models\StockMovement::class => 'Catalog & inventory',
             Models\Order::class, Models\ReturnRequest::class, Models\ShippingZone::class, Models\Coupon::class => 'Orders & delivery',
             Models\Page::class, Models\ContentBlock::class, Models\Setting::class, Models\Media::class => 'Storefront content',
             default => 'Administration',
@@ -159,7 +159,7 @@ abstract class CommerceResource extends Resource
     public static function headerActions(): array
     {
         $model = static::getModel();
-        if (in_array($model, [Models\Order::class, Models\ReturnRequest::class, Models\StockMovement::class, Models\AuditLog::class], true)) {
+        if (in_array($model, [Models\Order::class, Models\ReturnRequest::class, Models\StockMovement::class, Models\AuditLog::class, Models\ProductReview::class], true)) {
             return [];
         }
         if ($model === Models\Media::class) {

@@ -6,6 +6,7 @@ use App\Http\Controllers\CatalogCsvController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\TrackOrderController;
 use App\Livewire\ShoppingBag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::get('/shop', [StoreController::class, 'catalog'])->name('catalog');
 Route::get('/category/{category}', [StoreController::class, 'catalog'])->name('category');
 Route::get('/collection/{collection}', fn (Request $r, string $collection) => app(StoreController::class)->catalog($r, null, $collection))->name('collection');
 Route::get('/products/{slug}', [StoreController::class, 'product'])->name('product');
+Route::post('/products/{slug}/reviews', [StoreController::class, 'review'])->middleware('throttle:review')->name('reviews.store');
+Route::get('/track-order', [TrackOrderController::class, 'form'])->name('track');
+Route::post('/track-order', [TrackOrderController::class, 'lookup'])->middleware('throttle:track')->name('track.lookup');
 Route::get('/pages/{slug}', [StoreController::class, 'page'])->name('page');
 Route::post('/locale', function (Request $r) {
     $data = $r->validate(['locale' => 'required|in:en,bn']);

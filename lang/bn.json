@@ -231,5 +231,22 @@
   "For order updates by email": "ইমেইলে অর্ডারের আপডেট পেতে",
   "Mobile number": "মোবাইল নম্বর",
   "House, road, village or area": "বাড়ি, রাস্তা, গ্রাম বা এলাকা",
-  "Free delivery on orders of": "ডেলিভারি চার্জ ফ্রি, অর্ডার হলে"
+  "Free delivery on orders of": "ডেলিভারি চার্জ ফ্রি, অর্ডার হলে",
+  "Customer reviews": "ক্রেতাদের রিভিউ",
+  "Verified purchase": "যাচাইকৃত ক্রেতা",
+  "No reviews yet. Be the first to share your experience.": "এখনও কোনো রিভিউ নেই। আপনিই প্রথম অভিজ্ঞতা জানান।",
+  "Write a review": "রিভিউ লিখুন",
+  "Your name": "আপনার নাম",
+  "Your rating": "আপনার রেটিং",
+  "Your review": "আপনার রিভিউ",
+  "Submit review": "রিভিউ জমা দিন",
+  "Reviews are checked by our team before they are shown.": "রিভিউ আমাদের টিম দেখে নেওয়ার পর প্রকাশ হয়।",
+  "Thank you! Your review will appear after our team approves it.": "ধন্যবাদ! আমাদের টিম অনুমোদন করলে আপনার রিভিউ প্রকাশ হবে।",
+  "Track your order": "অর্ডার ট্র্যাক করুন",
+  "Enter your order number and the mobile number you used when ordering.": "অর্ডার নম্বর এবং অর্ডারের সময় দেওয়া মোবাইল নম্বর লিখুন।",
+  "Order number": "অর্ডার নম্বর",
+  "Track order": "ট্র্যাক করুন",
+  "We could not find an order with this number and phone.": "এই নম্বর ও ফোন দিয়ে কোনো অর্ডার পাওয়া যায়নি।",
+  "Any fabric": "যেকোনো কাপড়",
+  "In stock only": "শুধু স্টকে আছে এমন"
 }
