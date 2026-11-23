@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Models\ShippingZone;
 use App\Models\Variant;
 use App\Notifications\OrderConfirmation;
+use App\Support\ManualPayments;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -53,8 +54,9 @@ final class CheckoutService
                 'public_id' => (string) Str::uuid(), 'checkout_key' => $key, 'user_id' => $locked->user_id, 'coupon_id' => $prepared['coupon']?->id,
                 'customer_name' => $data['name'], 'email' => self::contactEmail($data), 'phone' => $data['phone'],
                 'address' => ['address' => $data['address'], 'area' => $data['area'] ?? null, 'district' => $data['district'], 'postcode' => $data['postcode'] ?? null],
+                'payment_method' => $data['payment_method'] ?? 'cod', 'payment_sender' => $this->walletOnly($data, 'payment_sender'), 'payment_reference' => ($ref = $this->walletOnly($data, 'payment_reference')) ? strtoupper(trim($ref)) : null,
                 'shipping_method' => $prepared['zone']->name, 'subtotal' => $quote['subtotal'], 'discount' => $quote['discount'],
-                'shipping' => $quote['shipping'], 'total' => $quote['total'], 'reservation_expires_at' => now()->addDay(),
+                'shipping' => $quote['shipping'], 'total' => $quote['total'], 'reservation_expires_at' => ManualPayments::isManual($data['payment_method'] ?? 'cod') ? now()->addDays(3) : now()->addDay(),
             ]);
             $order->items()->createMany($prepared['items']);
             $locked->items()->delete();
@@ -94,8 +96,18 @@ final class CheckoutService
 
     private function prepare(Cart $cart, array $data): array
     {
-        if (($data['payment_method'] ?? 'cod') !== 'cod') {
-            $this->fail('payment_method', 'Only cash on delivery is available.');
+        $method = $data['payment_method'] ?? 'cod';
+        if ($method !== 'cod') {
+            if (! array_key_exists($method, ManualPayments::available())) {
+                $this->fail('payment_method', 'This payment method is not available.');
+            }
+            $reference = strtoupper(trim((string) ($data['payment_reference'] ?? '')));
+            if (! preg_match('/^[A-Z0-9]{6,20}$/', $reference) || ! preg_match('/^(?:\+?88)?01[3-9]\d{8}$/', (string) ($data['payment_sender'] ?? ''))) {
+                $this->fail('payment_reference', 'Enter the sender number and the transaction ID of your payment.');
+            }
+            if (Order::where('payment_reference', $reference)->exists()) {
+                $this->fail('payment_reference', 'This transaction ID has already been used.');
+            }
         }
         $items = $cart->items()->orderBy('variant_id')->get();
         if ($items->isEmpty()) {
@@ -148,6 +160,11 @@ final class CheckoutService
         $threshold = (int) Setting::value('free_delivery_min', '0') * 100;
 
         return $threshold > 0 && $payable >= $threshold ? 0 : $zone->charge;
+    }
+
+    private function walletOnly(array $data, string $key): ?string
+    {
+        return ManualPayments::isManual($data['payment_method'] ?? 'cod') ? ($data[$key] ?? null) : null;
     }
 
     private function publicQuote(array $prepared): array

@@ -22,6 +22,12 @@ if (! preg_match('/^#[0-9a-fA-F]{6}$/', $accent)) {
 <meta property="og:title" content="{{ $title ?? $brand }}"><meta property="og:description" content="{{ $description ?? \App\Models\Setting::value('seo_description') }}"><meta property="og:url" content="{{ url()->current() }}">
 @if(isset($shareImage)||$social)<meta property="og:image" content="{{ $shareImage ?? $social->url() }}">@endif
 @if(request()->is('account*','orders*','checkout*','login','register','bag','wishlist','track-order','admin-catalog*'))<meta name="robots" content="noindex,nofollow">@endif
+@php
+$pixelId=\App\Support\Analytics::facebookPixelId();
+$gaId=\App\Support\Analytics::gaId();
+@endphp
+@if($pixelId)<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','{{ $pixelId }}');fbq('track','PageView');</script>@endif
+@if($gaId)<script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','{{ $gaId }}');</script>@endif
 @vite(['resources/css/app.css','resources/js/app.js']) @livewireStyles
 <style>:root{--accent:{{ $accent }};--maroon:{{ $accent }}}</style></head><body>
 <a class="skip" href="#main">{{ __('Skip to content') }}</a>

@@ -31,7 +31,7 @@ class DemoSeeder extends Seeder
                 'brand_story' => 'Sari, Panjabi, Three-piece and everyday wear for the whole family. Trusted quality at fair prices.',
                 'brand_story_bn' => 'শাড়ি, পাঞ্জাবি, থ্রি-পিস ও পরিবারের সবার প্রতিদিনের পোশাক। বিশ্বস্ত মান, ন্যায্য দাম।',
                 'contact_email' => 'hello@example.test', 'contact_phone' => '+880 1700 000000', 'whatsapp' => '8801700000000',
-                'contact_address' => 'Dhaka, Bangladesh', 'free_delivery_min' => '3000',
+                'contact_address' => 'Dhaka, Bangladesh', 'free_delivery_min' => '3000', 'bkash_number' => '01700000001', 'nagad_number' => '01700000002',
                 'announcement' => 'Cash on delivery all over Bangladesh · 7-day easy return',
                 'announcement_bn' => 'সারা বাংলাদেশে ক্যাশ অন ডেলিভারি · ৭ দিনের মধ্যে সহজ রিটার্ন',
                 'seo_description' => 'Mamoni Bosraloy: sari, panjabi, three-piece, kurti, lungi and kids wear in Bangladesh. Prices in BDT with cash on delivery.',

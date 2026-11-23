@@ -102,6 +102,6 @@ GitHub Actions is configured for PHP linting, PostgreSQL tests, Redis connectivi
 - [Visual direction](docs/design.md)
 - [Demo image sources](docs/media-sources.md)
 
-bKash, Nagad and SSLCommerz are disabled. No provider credentials, payment callback endpoint or pretend successful online payment is included. Supply verified sandbox access before implementing a provider. Manual courier assignment/tracking works; future courier APIs have an interface.
+Provider-API payments (bKash, Nagad and SSLCommerz checkout) are disabled. Manual bKash/Nagad “send money” payments work when the bkash_number/nagad_number settings are set: staff verify the TrxID before the order is marked paid. No provider credentials, payment callback endpoint or pretend successful online payment is included. Supply verified sandbox access before implementing a provider. Manual courier assignment/tracking works; future courier APIs have an interface.
 
 No automatic deployment, default-branch merge or force-push is performed.

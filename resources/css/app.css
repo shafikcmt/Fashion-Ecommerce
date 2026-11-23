@@ -381,3 +381,14 @@ select option:disabled { color:#aaa; }
 .star-input input:focus-visible + label { outline:3px solid var(--accent); }
 .track-form { max-width:460px; }
 @media(max-width:800px) { .reviews-layout { grid-template-columns:minmax(0,1fr); } }
+
+/* ---- Payment methods ---- */
+.payment-methods { border:0; padding:0; margin:0 0 24px; }
+.payment-methods legend { padding:0; }
+.pay-option { display:flex; gap:12px; align-items:flex-start; background:var(--paper); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:10px; cursor:pointer; }
+.pay-option:has(input:checked) { border-color:var(--maroon); box-shadow:0 0 0 2px #7a1f2b33; }
+.pay-option input { width:20px; min-height:20px; margin-top:4px; accent-color:var(--maroon); }
+.pay-option strong { display:block; color:var(--maroon); }
+.pay-option small { display:block; color:var(--slate); font-weight:400; line-height:1.5; }
+.pay-fields { display:none; background:#fff7df; border:1px dashed var(--gold-deep); border-radius:12px; padding:14px 16px; }
+.payment-methods:has(input[value$="_manual"]:checked) .pay-fields { display:block; }

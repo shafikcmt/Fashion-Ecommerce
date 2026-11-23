@@ -6,6 +6,7 @@ use App\Models;
 use App\Services\InventoryService;
 use App\Services\MediaService;
 use App\Services\OrderService;
+use App\Support\ManualPayments;
 use App\Support\Money;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
@@ -131,6 +132,11 @@ abstract class CommerceResource extends Resource
                 ->action(function (Models\Order $record) {
                     Gate::authorize('update', $record);
                     app(OrderService::class)->collectCod($record);
+                });
+            $actions[] = Action::make('verifyPayment')->label('Mark payment verified')->successNotificationTitle('Payment marked as received')->requiresConfirmation()->modalDescription('Check the transaction ID and amount in your bKash/Nagad account before confirming.')->authorize('update')->visible(fn (Models\Order $record) => ManualPayments::isManual($record->payment_method) && $record->payment_status === 'unpaid' && $record->status !== 'cancelled')
+                ->action(function (Models\Order $record) {
+                    Gate::authorize('update', $record);
+                    app(OrderService::class)->verifyManualPayment($record);
                 });
             $actions[] = Action::make('refund')->label('Record manual refund')->successNotificationTitle('Manual refund recorded')->requiresConfirmation()->authorize('update')->visible(fn (Models\Order $record) => $record->payment_status === 'paid' && $record->fulfillment_status === 'returned')
                 ->action(function (Models\Order $record) {

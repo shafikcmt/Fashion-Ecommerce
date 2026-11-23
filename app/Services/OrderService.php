@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\ReturnRequest;
 use App\Models\StockMovement;
 use App\Models\Variant;
+use App\Support\ManualPayments;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -77,6 +78,18 @@ final class OrderService
                 $this->fail('Contact the store to cancel a confirmed order.');
             }
             $this->transition($o, 'cancelled');
+        }, 5);
+    }
+
+    /** Staff confirm that a manual bKash/Nagad transfer arrived. Never called from customer requests. */
+    public function verifyManualPayment(Order $order): void
+    {
+        DB::transaction(function () use ($order) {
+            $o = Order::lockForUpdate()->findOrFail($order->id);
+            if (! ManualPayments::isManual($o->payment_method) || $o->payment_status !== 'unpaid' || $o->status === 'cancelled') {
+                $this->fail('Only an unpaid, active bKash or Nagad order can be marked as paid.');
+            }
+            $o->update(['payment_status' => 'paid']);
         }, 5);
     }
 

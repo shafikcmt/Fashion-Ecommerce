@@ -60,3 +60,12 @@ S3 storage is configured through Laravel/Flysystem. Supply endpoint, bucket, reg
 - Order tracking: `/track-order` takes the order number and checkout phone and opens the order page through a one-hour signed link; wrong number or phone gives the same generic error.
 - Delivery of static assets: nginx serves `/build` with a one-year immutable cache, demo/images for seven days, and gzip.
 - Not done: automatic WebP/responsive image generation, a CDN, Bangla admin labels and a Bangla-aware full-text index.
+
+## Phase 5 additions (not yet run locally: PHP 8.4 was unavailable in the authoring environment)
+
+- **Manual bKash / Nagad "send money".** Setting `bkash_number` and/or `nagad_number` (valid BD mobile numbers) enables the option at checkout. The customer sends the total to the store number and enters the sender number and TrxID. The order is stored with `payment_method` `bkash_manual`/`nagad_manual`, `payment_status` unpaid, a unique `payment_reference`, and a 3-day (not 24-hour) hold. Staff use **Mark payment verified** in Orders after checking the amount and TrxID in their wallet app. A TrxID cannot be reused. Customers cannot self-cancel these orders; refunds remain manual. No wallet API is called and nothing is auto-verified.
+- **Facebook Pixel and Google Analytics 4.** Set `facebook_pixel_id` (digits) and/or `ga_measurement_id` (`G-XXXXXXXX`) in Settings. Page views, begin-checkout and purchase events are emitted only when an ID is set. IDs are validated before being written to the page.
+
+## Still pending credentials
+
+bKash/Nagad/SSLCommerz provider APIs, courier APIs (Pathao, Steadfast, RedX) and SMS order notifications need merchant/sandbox access and current documentation from the provider; none is implemented. Courier name and tracking number are still entered by hand.

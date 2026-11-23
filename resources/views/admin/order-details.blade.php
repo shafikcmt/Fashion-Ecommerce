@@ -20,7 +20,7 @@
     <x-filament::section heading="Totals & status">
         <dl style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1rem">
             <div><dt style="font-size: 0.875rem; opacity: 0.7">Order / fulfillment</dt><dd>{{ ucfirst($order->status) }} / {{ ucfirst($order->fulfillment_status) }}</dd></div>
-            <div><dt style="font-size: 0.875rem; opacity: 0.7">Payment</dt><dd>{{ ucfirst($order->payment_status) }}</dd></div>
+            <div><dt style="font-size: 0.875rem; opacity: 0.7">Payment</dt><dd>{{ ucfirst($order->payment_status) }} · {{ \App\Support\ManualPayments::label($order->payment_method) }}@if($order->payment_reference)<br>TrxID {{ $order->payment_reference }}<br>From {{ $order->payment_sender }}@endif</dd></div>
             <div><dt style="font-size: 0.875rem; opacity: 0.7">Courier / tracking</dt><dd>{{ $order->courier ?: 'Unassigned' }} / {{ $order->tracking_number ?: 'Not assigned' }}</dd></div>
             <div><dt style="font-size: 0.875rem; opacity: 0.7">Subtotal</dt><dd>{{ \App\Support\Money::format($order->subtotal) }}</dd></div>
             <div><dt style="font-size: 0.875rem; opacity: 0.7">Discount</dt><dd>{{ \App\Support\Money::format($order->discount) }}</dd></div>

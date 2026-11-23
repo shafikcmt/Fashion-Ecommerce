@@ -248,5 +248,14 @@
   "Track order": "ট্র্যাক করুন",
   "We could not find an order with this number and phone.": "এই নম্বর ও ফোন দিয়ে কোনো অর্ডার পাওয়া যায়নি।",
   "Any fabric": "যেকোনো কাপড়",
-  "In stock only": "শুধু স্টকে আছে এমন"
+  "In stock only": "শুধু স্টকে আছে এমন",
+  "Payment method": "পেমেন্ট পদ্ধতি",
+  "send money": "সেন্ড মানি",
+  "Send the order total to": "অর্ডারের মোট টাকা পাঠান",
+  "then enter your number and the transaction ID.": "তারপর আপনার নম্বর ও ট্রানজেকশন আইডি দিন।",
+  "Number you sent from": "যে নম্বর থেকে টাকা পাঠিয়েছেন",
+  "Transaction ID (TrxID)": "ট্রানজেকশন আইডি (TrxID)",
+  "Your order is confirmed after our team verifies the payment.": "আমাদের টিম পেমেন্ট যাচাই করার পর আপনার অর্ডার কনফার্ম হবে।",
+  "Payment verified. Thank you!": "পেমেন্ট যাচাই হয়েছে। ধন্যবাদ!",
+  "Place order": "অর্ডার করুন"
 }

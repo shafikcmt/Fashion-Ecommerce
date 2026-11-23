@@ -8,6 +8,7 @@ use App\Services\CartService;
 use App\Services\CheckoutService;
 use App\Services\OrderService;
 use App\Support\BdDistricts;
+use App\Support\ManualPayments;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,7 +33,8 @@ class CheckoutController extends Controller
         $data = $r->validate([
             'name' => 'required|string|max:100', 'email' => 'nullable|email|max:255', 'phone' => ['required', 'regex:/^(?:\+?88)?01[3-9]\d{8}$/'],
             'address' => 'required|string|max:255', 'area' => 'nullable|string|max:150', 'district' => ['required', Rule::in(BdDistricts::names())], 'postcode' => 'nullable|string|max:20',
-            'shipping_zone_id' => 'required|integer', 'coupon' => 'nullable|string|max:50', 'payment_method' => 'required|in:cod',
+            'shipping_zone_id' => 'required|integer', 'coupon' => 'nullable|string|max:50', 'payment_method' => ['required', Rule::in(['cod', ...array_keys(ManualPayments::available())])],
+            'payment_sender' => ['nullable', 'required_unless:payment_method,cod', 'regex:/^(?:\+?88)?01[3-9]\d{8}$/'], 'payment_reference' => ['nullable', 'required_unless:payment_method,cod', 'alpha_num', 'between:6,20'],
             'checkout_key' => 'required|uuid', 'terms' => 'accepted',
         ]);
         abort_unless(hash_equals((string) session('checkout_key'), $data['checkout_key']), 419);
@@ -53,6 +55,7 @@ class CheckoutController extends Controller
             return redirect()->route('checkout')->withErrors($e->errors())->withInput($review['data']);
         }
         session()->push('guest_orders', $order->public_id);
+        session()->flash('purchase', ['id' => $order->id, 'value' => round($order->total / 100, 2)]);
 
         return redirect(URL::temporarySignedRoute('orders.show', now()->addDays(30), ['order' => $order->public_id]));
     }
@@ -75,7 +78,7 @@ class CheckoutController extends Controller
     public function cancel(Request $r, Order $order): RedirectResponse
     {
         $this->authorizeView($r, $order);
-        abort_unless($order->status === 'pending', 422, 'Contact the store to cancel a confirmed order.');
+        abort_unless($order->status === 'pending' && $order->payment_method === 'cod', 422, 'Contact the store to cancel this order.');
         app(OrderService::class)->cancelPending($order);
 
         return back()->with('status', __('Order cancelled.'));
