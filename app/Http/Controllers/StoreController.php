@@ -22,6 +22,10 @@ class StoreController extends Controller
             'promos' => ContentBlock::with('media')->where('type', 'promotion')->where('active', true)->orderBy('position')->get(),
             'products' => Product::published()->with(['media', 'variants', 'category'])->where('featured', true)->limit(8)->get(),
             'arrivals' => Product::published()->with(['media', 'variants', 'category'])->latest()->limit(4)->get(),
+            'categories' => Category::withCount(['products' => fn ($q) => $q->published()])->orderBy('id')->get()->filter(fn ($c) => $c->products_count > 0),
+            'festival' => Collection::where('slug', 'eid-collection')->first(),
+            'festivalProducts' => Product::published()->with(['media', 'variants', 'category'])->whereHas('collections', fn ($q) => $q->where('slug', 'eid-collection'))->limit(4)->get(),
+            'sale' => Product::published()->with(['media', 'variants', 'category'])->whereHas('variants', fn ($q) => $q->whereNotNull('sale_price'))->limit(4)->get(),
         ]);
     }
 
@@ -42,7 +46,7 @@ class StoreController extends Controller
         }
         if ($r->filled('q')) {
             $term = '%'.str_replace(['%', '_'], ['\%', '\_'], $r->q).'%';
-            $query->where(fn ($q) => $q->where('name', 'like', $term)->orWhere('name_bn', 'like', $term));
+            $query->where(fn ($q) => $q->where('name', 'like', $term)->orWhere('name_bn', 'like', $term)->orWhere('fabric', 'like', $term)->orWhere('fabric_bn', 'like', $term));
         }
         $query->whereHas('variants', function ($q) use ($r) {
             if ($r->filled('size')) {

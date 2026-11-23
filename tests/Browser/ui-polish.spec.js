@@ -19,9 +19,9 @@ test('storefront review across English, Bangla and four widths', async ({ page }
   await page.getByLabel('Confirm password', { exact: true }).fill(password);
   await page.getByRole('button', { name: 'Create account', exact: true }).click();
   await page.waitForURL('**/verify-email');
-  await page.goto('/products/linen-relaxed-shirt');
-  await page.getByRole('combobox', { name: 'Color', exact: true }).selectOption('Sky blue');
-  await page.getByRole('combobox', { name: 'Size', exact: true }).selectOption('M');
+  await page.goto('/products/panjabi-white');
+  await page.getByRole('combobox', { name: 'Color', exact: true }).selectOption('White');
+  await page.getByRole('combobox', { name: 'Size', exact: true }).selectOption('40');
   await page.getByRole('button', { name: 'Add to bag', exact: true }).click();
   await expect(page.getByText('Added to your bag.', { exact: false })).toBeVisible();
   const phase = process.env.UI_REVIEW_PHASE;
@@ -34,7 +34,7 @@ test('storefront review across English, Bangla and four widths', async ({ page }
     }
     for (const width of [390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
-      for (const [name, url] of [['home', '/'], ['catalog', '/shop'], ['product', '/products/linen-relaxed-shirt'], ['bag', '/bag'], ['checkout', '/checkout'], ['account', '/account']]) {
+      for (const [name, url] of [['home', '/'], ['catalog', '/shop'], ['product', '/products/panjabi-white'], ['bag', '/bag'], ['checkout', '/checkout'], ['account', '/account']]) {
         await page.goto(url);
         await page.evaluate(async () => {
           await document.fonts.ready;

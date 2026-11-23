@@ -38,7 +38,7 @@ export async function prepareBrowserEnvironment() {
   Object.assign(process.env, {
     APP_ENV: 'local', APP_URL: baseURL, DB_CONNECTION: 'sqlite', DB_DATABASE: database,
     DB_URL: '', SESSION_DRIVER: 'database', CACHE_STORE: 'array', QUEUE_CONNECTION: 'database',
-    MAIL_MAILER: 'array', MEDIA_DISK: 'public', BROWSER_REVIEW_MARKER: marker,
+    MAIL_MAILER: 'array', MEDIA_DISK: 'public', STORE_DEFAULT_LOCALE: 'en', BROWSER_REVIEW_MARKER: marker,
   });
   for (const args of [['artisan', 'migrate', '--force', '--no-interaction'], ['artisan', 'commerce:seed-demo', '--no-interaction']]) {
     const result = phpCommand(args);

@@ -27,6 +27,14 @@ class ProductResource extends CommerceResource
                 Select::make('status')->options(['draft' => 'Draft', 'published' => 'Published', 'archived' => 'Archived'])->default('draft')->required(),
                 Toggle::make('featured')->label('Show in homepage favourites')->default(false),
             ])->columns(2)->columnSpanFull(),
+            Section::make('Fabric, origin & badge')->description('Shown on product cards and pages. Bangla fields fall back to English when empty.')->schema([
+                TextInput::make('fabric')->label('Fabric (English)')->maxLength(255),
+                TextInput::make('fabric_bn')->label('Fabric (Bangla)')->maxLength(255),
+                TextInput::make('origin')->label('Made in (English)')->maxLength(255),
+                TextInput::make('origin_bn')->label('Made in (Bangla)')->maxLength(255),
+                TextInput::make('badge')->label('Badge (English)')->helperText('e.g. Eid Special, Handloom, New')->maxLength(60),
+                TextInput::make('badge_bn')->label('Badge (Bangla)')->maxLength(60),
+            ])->columns(2)->columnSpanFull(),
             Section::make('Descriptions & fit')->description('Bangla fields fall back to English when empty. Body content is plain text.')->schema([
                 Textarea::make('description')->label('Description (English)')->rows(4)->required()->maxLength(10000),
                 Textarea::make('description_bn')->label('Description (Bangla)')->rows(4)->maxLength(10000),

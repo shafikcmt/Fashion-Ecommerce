@@ -1,6 +1,6 @@
-# Fashion Ecommerce
+# Mamoni Bosraloy (মামণি বস্ত্রালয়)
 
-A database-backed Bangla/English fashion storefront and Filament CMS. Laravel 13.35.0, PHP 8.4+, Filament 5.10.1, Livewire 4.4.7, Blade, Tailwind 4.3.3, PostgreSQL 17 and Redis. Packages are pinned in both manifests and lockfiles.
+A Bangladesh-focused clothing storefront (sari, panjabi, three-piece, kurti, lungi, hijab, kids and winter wear) with Bangla-first/English UI, BDT pricing, cash on delivery and a Filament CMS. It is a database-backed Bangla/English storefront and Filament CMS. Laravel 13.35.0, PHP 8.4+, Filament 5.10.1, Livewire 4.4.7, Blade, Tailwind 4.3.3, PostgreSQL 17 and Redis. Packages are pinned in both manifests and lockfiles.
 
 The modular monolith keeps catalog, inventory, checkout and CMS in one application. Database transactions and shared services enforce business rules across storefront and administration. Laravel 13 requires PHP 8.3+; the resolved dependencies use PHP 8.4. Filament 5 supports Laravel 11.28+ and Tailwind 4.1+. Compatibility was checked against [Laravel release notes](https://laravel.com/docs/13.x/releases), [Filament installation](https://filamentphp.com/docs/5.x/introduction/installation), and Composer resolution.
 
@@ -28,7 +28,7 @@ The administrator command prompts for a password and confirmation without loggin
 
 Admin roles: Super Admin manages everything; Catalog Manager manages catalog, images and stock; Order Manager manages orders, shipping, coupons, returns and reports; Content Editor manages pages, media, navigation and branding. Administrative users must have a verified email address.
 
-Upload images in Media, then select them in products or homepage blocks. Settings configure brand name, a hex brand color, contact details, announcement, SEO summary and logo/social image Media IDs. Body content is intentionally plain text and escaped. Products have English/Bangla descriptions, care instructions and size guides.
+Set `STORE_DEFAULT_LOCALE` (default `bn`) to choose the language new visitors see. Products also carry fabric, place of manufacture and a badge (for example Eid Special). Upload images in Media, then select them in products or homepage blocks. Settings configure brand name, a hex brand color, contact details, announcement, SEO summary and logo/social image Media IDs. Body content is intentionally plain text and escaped. Products have English/Bangla descriptions, care instructions and size guides.
 
 ## Without Docker
 
