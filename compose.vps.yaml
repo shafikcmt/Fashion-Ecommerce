@@ -1,29 +1,32 @@
 # Overrides for the shared VPS. Use together with compose.yaml:
 #   docker compose -p mamoni -f compose.yaml -f compose.vps.yaml ...
 # Everything is bound to the loopback interface so only the Cloudflare Tunnel can reach it,
-# and memory is capped so this stack cannot starve the other sites on the server.
+# and memory is capped so this stack cannot starve the other sites on the server. A container
+# that exceeds its cap is killed on its own instead of the host's OOM killer picking another site.
 name: mamoni
 services:
   web:
     ports: !override ["${WEB_BIND:-127.0.0.1}:${WEB_PORT:-8090}:80"]
     restart: unless-stopped
-    mem_limit: 128m
+    mem_limit: 64m
   app:
     restart: unless-stopped
     mem_limit: 512m
   worker:
     restart: unless-stopped
-    mem_limit: 256m
+    mem_limit: 192m
   scheduler:
     restart: unless-stopped
-    mem_limit: 128m
+    mem_limit: 96m
   postgres:
     restart: unless-stopped
-    mem_limit: 512m
+    mem_limit: 256m
   redis:
     restart: unless-stopped
-    mem_limit: 192m
+    mem_limit: 96m
   mailpit:
     ports: !override ["127.0.0.1:8026:8025"]
     restart: unless-stopped
     mem_limit: 64m
+  assets:
+    mem_limit: 900m
