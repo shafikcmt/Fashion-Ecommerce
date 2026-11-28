@@ -50,7 +50,8 @@ test('storefront review across English, Bangla and four widths', async ({ page }
             await menu.locator('summary').press('Escape');
             await expect(menu).not.toHaveAttribute('open', '');
             await expect(menu.locator('summary')).toBeFocused();
-            await expect(page.locator('.header-actions a[href$="wishlist"]')).toBeVisible();
+            // On phones the account, wishlist and bag links live in the bottom bar instead of the header.
+            await expect(page.locator(width <= 600 ? '.bottom-nav a[href$="wishlist"]' : '.header-actions a[href$="wishlist"]')).toBeVisible();
           }
           if (name === 'catalog' && width <= 960) {
             const filters = page.locator('.filter-panel');
@@ -59,7 +60,7 @@ test('storefront review across English, Bangla and four widths', async ({ page }
             await expect(filters.locator('select[name="sort"]')).toBeVisible();
             await filters.locator('summary').click();
           }
-          const tiny = await page.locator('.header-actions a, .header-actions button, .quantity-control button').evaluateAll(controls => controls.filter(control => control.getBoundingClientRect().width < 44 || control.getBoundingClientRect().height < 44).length);
+          const tiny = await page.locator('.header-actions a, .header-actions button, .quantity-control button').evaluateAll(controls => controls.filter(control => control.offsetParent !== null && control.getBoundingClientRect().width < 44 || control.getBoundingClientRect().height < 44).length);
           expect(tiny, `${name}: touch targets`).toBe(0);
         }
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name} ${locale} ${width}: overflow`).toBeTruthy();
