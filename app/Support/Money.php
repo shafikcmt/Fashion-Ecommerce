@@ -13,6 +13,27 @@ final class Money
         return app()->getLocale() === 'bn' ? self::digits($text) : $text;
     }
 
+    /** Paisa (stored) to whole or decimal taka (shown in admin forms). */
+    public static function toTaka(mixed $paisa): int|float|null
+    {
+        if ($paisa === null || $paisa === '') {
+            return null;
+        }
+        $taka = (int) $paisa / 100;
+
+        return $taka == (int) $taka ? (int) $taka : $taka;
+    }
+
+    /** Taka typed in admin forms to stored paisa, rounded to the nearest whole taka. */
+    public static function fromTaka(mixed $taka): ?int
+    {
+        if ($taka === null || $taka === '') {
+            return null;
+        }
+
+        return (int) round((float) $taka) * 100;
+    }
+
     /** Convert ASCII digits to Bangla digits. */
     public static function digits(string|int $value): string
     {

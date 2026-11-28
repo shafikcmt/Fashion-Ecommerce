@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Models\Category;
 use App\Models\Coupon;
+use App\Support\Money;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,9 +19,9 @@ class CouponResource extends CommerceResource
     public static function fields(): array
     {
         return [TextInput::make('code')->required()->unique(ignoreRecord: true)->maxLength(50),
-            Select::make('type')->options(['fixed' => 'Fixed amount in poisha', 'percent' => 'Percentage'])->default('fixed')->required(),
-            TextInput::make('value')->integer()->minValue(1)->maxValue(100000000)->required(),
-            TextInput::make('minimum')->label('Minimum bag subtotal in poisha')->integer()->minValue(0)->default(0)->required(),
+            Select::make('type')->options(['fixed' => 'Fixed amount (BDT)', 'percent' => 'Percentage'])->default('fixed')->required(),
+            TextInput::make('value')->label('Discount value')->helperText('Fixed amount: taka, e.g. 100. Percentage: a number, e.g. 10 for 10%.')->numeric()->minValue(1)->maxValue(1000000)->required()->formatStateUsing(fn ($state, $record) => $record?->type === 'fixed' ? Money::toTaka($state) : $state)->dehydrateStateUsing(fn ($state, $get) => $get('type') === 'fixed' ? Money::fromTaka($state) : (int) round((float) $state)),
+            TextInput::make('minimum')->label('Minimum bag subtotal (BDT)')->helperText('Coupon works only when the bag is at least this many taka. 0 = no minimum.')->numeric()->minValue(0)->default(0)->required()->formatStateUsing(fn ($state) => Money::toTaka($state))->dehydrateStateUsing(fn ($state) => Money::fromTaka($state)),
             Select::make('category_id')->options(Category::pluck('name', 'id'))->searchable()->label('Eligible category (empty = all)'),
             TextInput::make('usage_limit')->integer()->minValue(1)->default(100)->required(), TextInput::make('per_customer_limit')->integer()->minValue(1)->default(1)->required(),
             DateTimePicker::make('expires_at')->required(), Toggle::make('active')->default(true)];

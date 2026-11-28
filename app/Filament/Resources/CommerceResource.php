@@ -64,7 +64,7 @@ abstract class CommerceResource extends Resource
         }
         foreach (static::columns() as $name) {
             $c = TextColumn::make($name)->sortable()->searchable()->limit(55);
-            if (in_array($name, ['price', 'sale_price', 'total'], true)) {
+            if (in_array($name, ['price', 'sale_price', 'total', 'charge', 'minimum'], true)) {
                 $c->formatStateUsing(fn ($state) => Money::format((int) $state));
             }
             if ($name === 'id' || $name === 'sku') {
