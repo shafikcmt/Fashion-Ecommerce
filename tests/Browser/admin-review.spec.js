@@ -146,7 +146,10 @@ test('admin saves, uploads, stock, courier and return workflows', async ({ page,
   await page.goto('/products/panjabi-white');
   await expect(page.getByRole('heading', { name: 'Reviewed cotton panjabi', exact: true })).toBeVisible();
   await page.getByAltText('Review upload image', { exact: true }).scrollIntoViewIfNeeded();
-  await expect(page.getByAltText('Review upload image', { exact: true })).toHaveJSProperty('naturalWidth', 1000);
+  // The gallery uses srcset, so the browser may pick a smaller WebP variant than the 1000px original.
+  const galleryImage = page.getByAltText('Review upload image', { exact: true });
+  await expect.poll(() => galleryImage.evaluate(image => image.naturalWidth)).toBeGreaterThan(300);
+  expect(await galleryImage.getAttribute('srcset')).toContain('.webp');
   await capture(page, 'saved-product-storefront-390');
   await page.goto('/admin/products');
   await page.getByRole('searchbox').fill('Reviewed cotton panjabi');
