@@ -620,3 +620,7 @@ html[lang=bn] .product-card h3 { line-height:1.7; min-height:3.4em; }
   .site-footer .footer-grid>div:last-child { grid-column:1/-1; }
   .site-footer .footer-bottom { flex-direction:column; align-items:flex-start; gap:8px; }
 }
+.footer-meta { display:flex; align-items:center; gap:10px 22px; flex-wrap:wrap; }
+.dev-credit { font-size:.82rem; color:#bfae95; }
+.site-footer .dev-credit a { color:var(--gold); font-weight:600; text-decoration:underline; text-underline-offset:3px; }
+.site-footer .dev-credit a:hover { color:#fff; }
