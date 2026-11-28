@@ -42,6 +42,8 @@ echo "==> Building frontend assets"
 "${COMPOSE[@]}" run --rm assets
 
 echo "==> Migrating and caching"
+# Drop any stale cached config first so a corrected .env (for example the database password) is used.
+"${COMPOSE[@]}" exec -T app php artisan optimize:clear
 "${COMPOSE[@]}" exec -T app php artisan migrate --force
 "${COMPOSE[@]}" exec -T app php artisan storage:link --force
 "${COMPOSE[@]}" exec -T app php artisan config:cache
