@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('media', fn (Blueprint $table) => $table->json('variants')->nullable());
+        Schema::table('media', fn (Blueprint $table) => $table->jsonb('variants')->nullable());
     }
 
     public function down(): void

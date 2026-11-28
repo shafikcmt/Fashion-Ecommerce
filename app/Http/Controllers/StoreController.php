@@ -117,7 +117,7 @@ class StoreController extends Controller
         $data = $r->validate(['name' => [$r->user() ? 'nullable' : 'required', 'string', 'max:100'], 'rating' => 'required|integer|between:1,5', 'body' => 'required|string|min:10|max:2000']);
         $user = $r->user();
         $verified = $user && Order::where('user_id', $user->id)->where('status', 'delivered')->whereHas('items', fn ($q) => $q->whereIn('variant_id', $product->variants()->select('id')))->exists();
-        $attributes = ['name' => $data['name'] ?: $user?->name ?: 'Customer', 'rating' => $data['rating'], 'body' => $data['body'], 'status' => 'pending', 'verified_purchase' => (bool) $verified];
+        $attributes = ['name' => ($data['name'] ?? null) ?: $user?->name ?: 'Customer', 'rating' => $data['rating'], 'body' => $data['body'], 'status' => 'pending', 'verified_purchase' => (bool) $verified];
         if ($user) {
             $product->reviews()->updateOrCreate(['user_id' => $user->id], $attributes);
         } else {
