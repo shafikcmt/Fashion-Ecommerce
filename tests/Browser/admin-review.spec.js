@@ -137,6 +137,8 @@ test('admin saves, uploads, stock, courier and return workflows', async ({ page,
   await capture(page, 'media-saved-390');
 
   await page.goto('/admin/products');
+  await page.getByRole('searchbox').fill('Cotton Panjabi, White');
+  await expect(page.locator('.fi-ta-row')).toHaveCount(1);
   await openRowAction(page, 'Cotton Panjabi, White', 'Edit');
   await modal(page).getByLabel(/Name \(English\)/).fill('Reviewed cotton panjabi');
   await selectOption(page, /^Gallery images/, 'Review upload image');
@@ -147,6 +149,8 @@ test('admin saves, uploads, stock, courier and return workflows', async ({ page,
   await expect(page.getByAltText('Review upload image', { exact: true })).toHaveJSProperty('naturalWidth', 1000);
   await capture(page, 'saved-product-storefront-390');
   await page.goto('/admin/products');
+  await page.getByRole('searchbox').fill('Reviewed cotton panjabi');
+  await expect(page.locator('.fi-ta-row')).toHaveCount(1);
   await openRowAction(page, 'Reviewed cotton panjabi', 'Edit');
   await modal(page).getByLabel(/Name \(English\)/).fill('Cotton Panjabi, White');
   await submitAction(page, 'Saved');
@@ -229,7 +233,7 @@ test('admin saves, uploads, stock, courier and return workflows', async ({ page,
   await expect(customer.getByText('Added to your bag.', { exact: false })).toBeVisible();
   await customer.goto('/checkout');
   for (const [label, value] of [['Full name', 'Review Buyer'], [/^Email/, 'review-buyer@example.test'], ['Mobile number', '01700000000']]) await customer.getByLabel(label, typeof label === 'string' ? { exact: true } : undefined).fill(value);
-  await customer.getByLabel('District', { exact: true }).selectOption('Dhaka');
+  await customer.locator('select[name=district]').selectOption('Dhaka');
   await customer.getByLabel('Street address').fill('Disposable review address');
   await customer.getByRole('combobox', { name: 'Shipping method', exact: true }).selectOption({ label: 'Inside Dhaka · ৳70' });
   await customer.locator('input[name=terms]').check();

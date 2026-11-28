@@ -3,7 +3,7 @@ test('responsive catalog and Bangla navigation', async ({page},testInfo)=>{
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto('/');
   await expect(page.getByRole('heading',{name:'Eid is coming. Dress your family.'})).toBeVisible();
-  await expect(page.locator('.hero-image img')).toHaveJSProperty('naturalWidth',1000);
+  await expect(page.locator('.hero-image img').first()).toHaveJSProperty('naturalWidth',1000);
   await expect(page.locator('.product-card')).toHaveCount(20);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
   await page.screenshot({path:testInfo.outputPath('home.png'),fullPage:true});
@@ -28,7 +28,7 @@ test('guest purchase, invoice and cancellation work end to end', async ({page},t
   await page.getByLabel(/^Email/).fill('browser@example.test');
   await page.getByLabel('Mobile number',{exact:true}).fill('01712345678');
   await page.getByLabel('Street address').fill('12 Development Road');
-  await page.getByLabel('District',{exact:true}).selectOption('Dhaka');
+  await page.locator('select[name=district]').selectOption('Dhaka');
   await page.getByRole('combobox',{name:'Shipping method',exact:true}).selectOption({label:'Inside Dhaka · ৳70'});
   await page.locator('input[name=terms]').check();
   await page.getByRole('button',{name:'Review your order',exact:true}).click();
