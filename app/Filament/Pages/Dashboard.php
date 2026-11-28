@@ -28,6 +28,9 @@ class Dashboard extends \Filament\Pages\Dashboard
             'low' => $canCatalog ? Variant::whereRaw('(stock-reserved) <= low_stock_threshold')->count() : null,
             'lowStock' => $canCatalog ? Variant::with('product')->whereRaw('(stock-reserved) <= low_stock_threshold')->orderByRaw('stock - reserved')->limit(8)->get() : collect(),
             'days' => $canReport ? $this->lastSevenDays() : [],
+            'todayOrders' => $canReport ? Order::whereDate('created_at', today())->where('status', '!=', 'cancelled')->count() : null,
+            'todayRevenue' => $canReport ? (int) Order::whereDate('created_at', today())->where('payment_status', 'paid')->sum('total') : null,
+            'recentOrders' => $canReport ? Order::latest('id')->limit(8)->get(['id', 'customer_name', 'total', 'status', 'payment_status', 'payment_method', 'created_at']) : collect(),
             'awaitingPayment' => $canReport ? Order::whereIn('payment_method', array_keys(ManualPayments::METHODS))->where('payment_status', 'unpaid')->where('status', '!=', 'cancelled')->count() : null,
             'pendingReviews' => Gate::allows('viewAny', ProductReview::class) ? ProductReview::where('status', 'pending')->count() : null,
         ];

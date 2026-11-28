@@ -292,5 +292,13 @@
   "Quality checked before dispatch": "পাঠানোর আগে মান যাচাই করা",
   "Find what you need in a tap.": "পছন্দের পোশাক এক ট্যাপেই খুঁজে নিন।",
   "Collection": "কালেকশন",
-  "Shop now": "এখনই কিনুন"
+  "Shop now": "এখনই কিনুন",
+  "Orders today": "আজকের অর্ডার",
+  "Paid revenue today": "আজকের পেইড আয়",
+  "Paid revenue, last 30 days": "গত ৩০ দিনের পেইড আয়",
+  "Recent orders": "সাম্প্রতিক অর্ডার",
+  "No orders yet.": "এখনও কোনো অর্ডার নেই।",
+  "Customer": "ক্রেতা",
+  "Status": "স্ট্যাটাস",
+  "Quick links": "দ্রুত লিংক"
 }
