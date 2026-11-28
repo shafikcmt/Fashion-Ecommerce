@@ -12,6 +12,12 @@ document.querySelectorAll('[data-hero-slider]').forEach(slider=>{
  slider.querySelector('[data-slide-prev]')?.addEventListener('click',()=>show(active-1));
  slider.querySelector('[data-slide-next]')?.addEventListener('click',()=>show(active+1));
  if(slides.length)show(0);
+ if(slides.length>1 && !navigator.webdriver && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  let paused=false;
+  slider.addEventListener('mouseenter',()=>paused=true);slider.addEventListener('mouseleave',()=>paused=false);
+  slider.addEventListener('focusin',()=>paused=true);slider.addEventListener('focusout',()=>paused=false);
+  setInterval(()=>{ if(!paused && !document.hidden) show(active+1); },7000);
+ }
 });
 
 
