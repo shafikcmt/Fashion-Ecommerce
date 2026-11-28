@@ -624,3 +624,89 @@ html[lang=bn] .product-card h3 { line-height:1.7; min-height:3.4em; }
 .dev-credit { font-size:.82rem; color:#bfae95; }
 .site-footer .dev-credit a { color:var(--gold); font-weight:600; text-decoration:underline; text-underline-offset:3px; }
 .site-footer .dev-credit a:hover { color:#fff; }
+
+/* ================= Mobile polish 3 (real phone feedback) ================= */
+/* Calmer palette: no pink band, no teal; sale = cream, banners = maroon / plum / gold. */
+.sale-band { background:#fff; border:1px solid var(--border); box-shadow:0 8px 22px #7a1f2b0f; }
+.sale-band h2 { color:var(--maroon); }
+.occasion-1 { background:linear-gradient(135deg,#5b1a3a,#2e0f1f); }
+.whatsapp-float { width:50px; height:50px; opacity:.96; }
+.hero-controls.wrap { width:auto; }
+
+@media(max-width:700px) {
+  /* Banner first, then the message. */
+  .hero { grid-template-columns:minmax(0,1fr); }
+  .hero-visual { order:-1; height:216px; }
+  .hero-visual .hero-image { height:216px; }
+  .hero-chips { bottom:12px; gap:8px; display:flex; }
+  .hero-chip { width:80px; padding:5px 5px 3px; border-radius:10px; }
+  .hero-chip img { height:92px; border-radius:6px; }
+  .hero-chip span { font-size:.68rem; margin-top:3px; }
+  .hero-controls { top:10px; right:10px; bottom:auto; left:auto; padding:2px 4px; }
+  .hero-controls button { min-width:32px; min-height:32px; }
+  .hero-copy { padding:22px 18px 26px; }
+  .hero h1 { font-size:2rem; line-height:1.3; margin-bottom:.5rem; }
+  .hero-copy p { font-size:.95rem; margin-bottom:16px; }
+  .hero-actions { flex-wrap:nowrap; gap:10px; width:100%; }
+  .hero-actions .button { flex:1 1 0; min-width:0; padding:10px 10px; font-size:.9rem; min-height:46px; }
+  .eyebrow { margin-bottom:10px; padding:5px 12px; font-size:.72rem; }
+}
+@media(max-width:600px) {
+  body { font-size:15px; }
+  .hero-chips { display:flex; }
+  .trust-cards { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:14px; }
+  .trust-cards>div { flex-direction:row; align-items:center; gap:8px; padding:10px; border-radius:12px; box-shadow:0 4px 12px #7a1f2b0f; }
+  .trust-cards .ico { flex:0 0 32px; width:32px; height:32px; }
+  .trust-cards .ico svg { width:16px; height:16px; }
+  .trust-cards strong { font-size:.78rem; line-height:1.35; }
+  .trust-cards small { display:none; }
+
+  html[lang=bn] .section-heading h2,.section-heading h2 { font-size:1.4rem; line-height:1.4; }
+  .section-heading h2::after { width:44px; height:3px; margin-top:6px; }
+  .section-heading p { font-size:.85rem; }
+  .section.tight { padding-block:26px 4px; }
+
+  .cat-tile { flex-basis:118px; border-radius:14px; }
+  .cat-label { padding:40px 10px 10px; }
+  .cat-label strong { font-size:.88rem; }
+  .cat-label small { font-size:.68rem; }
+
+  .occasion-grid { display:flex; overflow-x:auto; gap:12px; scroll-snap-type:x mandatory; padding-bottom:6px; scrollbar-width:none; }
+  .occasion { flex:0 0 74%; min-height:104px; padding:16px 18px; scroll-snap-align:start; }
+  .occasion strong { font-size:1.2rem; }
+
+  /* Product cards: smaller type, shorter picture, lighter badges. */
+  .product-card { border-radius:14px; }
+  .product-photo { aspect-ratio:4/5; }
+  .product-badge { top:8px; left:8px; padding:3px 9px; font-size:.68rem; }
+  .wish { top:8px; right:8px; }
+  .wish button { width:32px; height:32px; }
+  .wish svg { width:17px; height:17px; }
+  .product-card .product-meta { margin-top:8px; font-size:.7rem; }
+  .product-card h3 { font-size:.84rem; line-height:1.5; min-height:2.9em; margin-bottom:4px; }
+  html[lang=bn] .product-card h3 { line-height:1.55; min-height:3.1em; }
+  .product-card .price { font-size:.98rem; margin-bottom:2px; }
+  .product-card .price del { font-size:.72rem; margin-left:5px; }
+  .product-card .rating { font-size:.68rem; }
+  .product-card .stars { font-size:.82rem; letter-spacing:1px; }
+  .product-card .card-extra { padding-bottom:10px; font-size:.7rem; }
+  .swatches i { width:12px; height:12px; }
+  .product-card>:not(.product-photo-wrap) { padding-inline:10px; }
+
+  .steps-grid li { padding:16px 16px 16px 68px; border-radius:14px; }
+  .step-no { left:14px; top:14px; width:40px; height:40px; font-size:1.1rem; }
+  .steps-grid strong { font-size:.95rem; }
+
+  .promo>div { padding:22px; }
+  .promo h2 { font-size:1.6rem; }
+
+  /* Footer call-to-action: never overflow. */
+  .footer-cta strong { font-size:1.05rem; }
+  .footer-cta-actions .button { padding-inline:12px; min-height:46px; font-size:.92rem; }
+  .contact-list li,.site-footer .contact-list a { font-size:.85rem; }
+  .site-footer .footer-grid a:not(.wordmark) { min-height:30px; }
+
+  .bottom-nav a { min-height:58px; padding-bottom:4px; font-size:.66rem; }
+  .bottom-nav a span { line-height:1.2; }
+  .whatsapp-float { bottom:76px; right:12px; width:46px; height:46px; }
+}
