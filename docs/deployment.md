@@ -88,3 +88,7 @@ Configure a staging instance with that database, restored media and the matching
 ## Release/rollback
 
 Review CI and staging results, back up, then release explicitly. Repoint the release symlink and restart workers after asset/configuration changes. For rollback, restore the previous application release; evaluate database compatibility before reverting migrations. Never run migrate:fresh or destructive test suites on live data. No deployment was performed by this implementation.
+
+## Shared VPS with Docker, a self-hosted runner and a Cloudflare Tunnel
+
+Files: `compose.vps.yaml` (loopback-only ports, memory caps, restart policies, project name `mamoni`), `deploy/deploy.sh` (rsync to `~/mamoni`, composer, assets, migrate, cache, workers, health check), `deploy/env.vps.example` (server `.env` template) and `.github/workflows/deploy.yml` (runs after the "Commerce checks" workflow passes on `main`, on a runner labelled `mamoni`). The nginx config honours `X-Forwarded-Proto` and `CF-Connecting-IP` so HTTPS URLs, secure cookies and per-visitor rate limits work behind Cloudflare. Use `APP_ENV=staging` while demo data is needed; `commerce:seed-demo` refuses `production`. Never run `docker compose down -v`, `docker system prune` or `docker volume prune` on the shared host.
