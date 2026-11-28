@@ -25,8 +25,8 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel->default()->id('admin')->path('admin')->login()->brandName('Fashion CMS')->favicon(asset('images/brand-mark.svg'))
-            ->colors(['primary' => Color::Indigo])
+        return $panel->default()->id('admin')->path('admin')->login()->brandName('Mamoni Bosraloy · Admin')->favicon(asset('images/brand-mark.svg'))
+            ->colors(['primary' => Color::Red])
             ->renderHook(PanelsRenderHook::BODY_END, fn (): View => view('filament.sidebar-keyboard'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->pages([Dashboard::class, Reports::class])

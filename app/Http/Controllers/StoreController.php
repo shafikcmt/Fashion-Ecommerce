@@ -27,6 +27,8 @@ class StoreController extends Controller
             'products' => Product::published()->withRating()->with(['media', 'variants', 'category'])->where('featured', true)->limit(8)->get(),
             'arrivals' => Product::published()->withRating()->with(['media', 'variants', 'category'])->latest()->limit(4)->get(),
             'categories' => Category::withCount(['products' => fn ($q) => $q->published()])->orderBy('id')->get()->filter(fn ($c) => $c->products_count > 0),
+            'categoryCovers' => Product::published()->with('media')->whereIn('id', Product::query()->where('status', 'published')->selectRaw('MIN(id)')->groupBy('category_id'))->get()->keyBy('category_id'),
+            'occasions' => Collection::orderBy('id')->limit(3)->get(),
             'festival' => Collection::where('slug', 'eid-collection')->first(),
             'festivalProducts' => Product::published()->withRating()->with(['media', 'variants', 'category'])->whereHas('collections', fn ($q) => $q->where('slug', 'eid-collection'))->limit(4)->get(),
             'sale' => Product::published()->withRating()->with(['media', 'variants', 'category'])->whereHas('variants', fn ($q) => $q->whereNotNull('sale_price'))->limit(4)->get(),
